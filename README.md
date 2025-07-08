@@ -3,38 +3,30 @@ This work presents the FALCON (Fast Active Learning for Computational ab initio 
 
 ![Alt text](FALCON_MD.png?raw=true "FALCON")
 
+
 # Authors
-------------
 Noah Felis
 Wilke Dononelli
 
-
-# Requirements
 ------------
 
+# Requirements
 * Python_ 3.8 or later
 * NumPy_ (base N-dimensional array package)
 * ase_ 3.23 (functions to determine atomic structures' geometries and quantum chemical calculators)
 * agox (Atomistic Global Optimization X)
 
-
-
+------------
 
 # Installation
-------------
-
 FALCON can be installed by running ``pip install falcon-md``. When using the ``git`` version, add ``~/falcon-md`` to your $PYTHONPATH environment variable. 
 
-
-
-# Tutorial
 ------------
 
+# Tutorial
 A tutorial is available here: https://thequantumchemist.github.io/falcon/
 
-
+------------
 
 # Citation
---------
-
-When using JEDI, please cite the following papers:
+When using FALCON, please cite the following papers:
