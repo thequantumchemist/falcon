@@ -36,7 +36,7 @@ Alternatively, you can add ``~/falcon_md`` to your $PYTHONPATH environment varia
 
 # Tutorial
 A basic tutorial script for molecular dynamics simulation with FALCON is available at `~/falcon_md/tutorial/simple_tutorial.py`.
-This is a simulation of a Pt₅₅ cluster using a simple EMT potential, making the simulation computationally not expensive.
+This example simulates a 55-atom platinum (Pt) cluster using a simple Effective Medium Theory (EMT) potential, allowing the simulation to run efficiently without requiring extensive computational resources.
 
 ------------
 
