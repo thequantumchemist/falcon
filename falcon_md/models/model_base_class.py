@@ -5,7 +5,12 @@ from ase import Atoms
 
 class ModelBaseClass():
 
-    """Implementation of Model Base Class"""
+    """Implementation of Model Base Class
+    model needs to have a descriptor which is called in the FALCON main code as model.descriptor
+    e.g. if one used the dscibe library: 
+    self.descriptor=
+    
+    """
 
 
     def __init__(self):
