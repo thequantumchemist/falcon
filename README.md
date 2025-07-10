@@ -98,7 +98,8 @@ dyn.run(100)    # Number of steps should be increased for real simulations.
 ## Advanced tutorial
 An advanced tutorial script is available at `~/falcon_md/tutorial/advanced_tutorial.py`.
 
-This tutorial demonstrates a molecular dynamics simulation of aluminum melting, again using the EMT potential. It showcases the various parameters that can be adjusted for better control of the FALCON OTF training.
+The advanved tutorial demonstrates a molecular dynamics simulation of aluminum melting, again using the EMT potential. It showcases the various parameters that can be adjusted for better control of the FALCON OTF training.
+
 After running the advanced tutorial you can analyse the results by visualising the simulation progression and Radial Distribution Functions, using the `~/falcon_md/tutorial/advanced_tutorial_analysis.py` script. 
 
 
