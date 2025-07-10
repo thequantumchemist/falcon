@@ -22,7 +22,12 @@ Wilke Dononelli
 ------------
 
 # Installation
-FALCON can be installed by running ``pip install falcon_md``. When using the ``git`` version, add ``~/falcon_md`` to your $PYTHONPATH environment variable. 
+FALCON can be installed by clonoing the git repository installing it using ``pip``. 
+``git clone https://github.com/thequantumchemist/falcon
+cd falcon
+pip install .``
+
+Alternatively, you can add ``~/falcon_md`` to your $PYTHONPATH environment variable after cloning the repository.
 
 ------------
 
