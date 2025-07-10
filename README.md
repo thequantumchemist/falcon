@@ -27,8 +27,8 @@ FALCON can be installed by cloning the Git repository and installing it using `p
 ```bash
 git clone https://github.com/thequantumchemist/falcon
 cd falcon
-pip install .```
-
+pip install .
+```
 
 Alternatively, you can add ``~/falcon_md`` to your $PYTHONPATH environment variable after cloning the repository.
 
