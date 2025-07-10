@@ -1,5 +1,5 @@
 # FALCON
-This work presents the FALCON (Fast Active Learning for Computational ab initio mOlecular dyNamics) calculator where the ML model is trained on-the-fly (OTF) and uses its own uncertainty estimation to decide whether an exact calculation is required. 
+This work presents the __FALCON__ (__F__ast __A__ctive __L__earning for __C__omputational ab initio m__O__lecular dy__N__amics) calculator where the ML model is trained on-the-fly (OTF) and uses its own uncertainty estimation to decide whether an exact calculation is required. 
 
 ![Alt text](FALCON_MD.png?raw=true "FALCON")
 
