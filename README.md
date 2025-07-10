@@ -3,7 +3,7 @@ This work presents the FALCON (Fast Active Learning for Computational ab initio 
 
 ![Alt text](FALCON_MD.png?raw=true "FALCON")
 
-The FALCON calculator and can be used with any machine learning model. A base class is provided in order to make different ML frameworks work together with FALCON.
+The FALCON calculator can be used with any machine learning model. A base class is provided in order to make different ML frameworks work together with FALCON.
 However, as standart the Gaussian Process Regression (GPR) and its sparsified versions (SparseGPR) as implemented in the AGOX framework by Hammer and co-workers is implemented as default ML models.
 
 
