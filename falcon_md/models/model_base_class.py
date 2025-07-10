@@ -150,3 +150,53 @@ class ModelBaseClass():
         # F_unc = my_forces_uncertainty_prediction()
 
         return F_unc
+
+
+
+class DescriptorBaseClass():
+
+    """Implementation of Descriptor Base Class"""
+
+
+    def __init__(self):
+        pass
+
+    def create_features(atoms: Atoms, **kwargs) -> np.ndarray:
+        """
+        Method to implement that does the calculation of the feature vector for a single structure.
+
+        This method should not (generally) deal with being given a list of
+        Atoms objects.
+
+        Parameters
+        ----------
+        atoms : Atoms object
+
+        Returns
+        --------
+        features : Features of shape [n_centers, n_features]
+        """
+
+        # features = my_feature_vector_calculation()
+
+        return features
+
+
+    def get_features(atoms: List[Atoms], **kwargs) -> np.ndarray:
+        """
+        Compute feature tensor for a list of Atoms objects.
+
+        Parameters
+        ----------
+        atoms : list of ase.Atoms
+
+        Returns
+        -------
+        features : np.ndarray
+            Array of shape [n_structures, n_centers, n_features]
+        """
+
+        features = np.array([create_features(a, **kwargs) for a in atoms])
+
+        return features
+
