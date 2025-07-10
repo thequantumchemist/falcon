@@ -9,6 +9,7 @@ However, as standart the Gaussian Process Regression (GPR) and its sparsified ve
 
 # Authors
 Noah Felis
+
 Wilke Dononelli
 
 ------------
