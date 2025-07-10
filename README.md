@@ -38,6 +38,29 @@ Alternatively, you can add ``~/falcon_md`` to your $PYTHONPATH environment varia
 A basic tutorial script for molecular dynamics simulation with FALCON is available at `~/falcon_md/tutorial/simple_tutorial.py`.
 This example simulates a 55-atom platinum (Pt) cluster using a simple Effective Medium Theory (EMT) potential, allowing the simulation to run efficiently without requiring extensive computational resources.
 
+```bash
+from ase.calculators.emt import EMT
+from ase import units
+from ase.io.trajectory import Trajectory
+from ase.optimize import QuasiNewton
+from ase.io import read, write
+
+from falcon_md.otf_calculator import FALCON
+from falcon_md.models.agox_models import GPR
+from falcon_md.structures import load_structure
+from falcon_md.utils.langevin import Langevin
+
+##########################################################################
+
+# General Setup
+
+atoms = load_structure('Pt55')   # Setup ASE atoms object (Structure is loaded from FALCON's tutorial structures.)
+
+exact_calc = EMT()   # Calculator for exact calculations during OTF training.
+T = 600              # Temperature in K.
+accuracy_e = 0.10    # Accuracy Threshold (Epsilon) in eV.
+```
+
 ------------
 
 # Citation
