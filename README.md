@@ -89,7 +89,7 @@ traj = Trajectory(f'MD.traj', 'w', atoms)
 dyn.attach(traj.write)                      # An ASE Trajectory will be written for every frame (can be changed using keyword 'interval=')
 ```
 
-Now the MD simualtion can be started. However for real runs you should increase thee number of MD steps.
+Now the MD simulation can be started. However for real runs you should increase thee number of MD steps.
 ```bash
 # Now run the OTF-MD Simulation!
 dyn.run(100)    # Number of steps should be increased for real simulations.
@@ -99,7 +99,7 @@ dyn.run(100)    # Number of steps should be increased for real simulations.
 An advanced tutorial script is available at `~/falcon_md/tutorial/advanced_tutorial.py`.
 
 This tutorial demonstrates a molecular dynamics simulation of aluminum melting, again using the EMT potential. It showcases the various parameters that can be adjusted for better control of the FALCON OTF training.
-After running the advanced tutorial you can analyze the results by visualizing the simulation progression and Radial Distribution Functions, using the `~/falcon_md/tutorial/advanced_tutorial_analysis.py` script. 
+After running the advanced tutorial you can analyse the results by visualising the simulation progression and Radial Distribution Functions, using the `~/falcon_md/tutorial/advanced_tutorial_analysis.py` script. 
 
 
 ------------
