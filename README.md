@@ -22,7 +22,7 @@ Wilke Dononelli
 ------------
 
 # Installation
-FALCON can be installed by running ``pip install falcon-md``. When using the ``git`` version, add ``~/falcon-md`` to your $PYTHONPATH environment variable. 
+FALCON can be installed by running ``pip install falcon_md``. When using the ``git`` version, add ``~/falcon_md`` to your $PYTHONPATH environment variable. 
 
 ------------
 
