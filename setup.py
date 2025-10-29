@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='falcon_md',
-    version='1.0.0',
+    version='1.1.0',
     description='The python distribution for the FALCON on-the-fly Machine Learning ab initio Molceular Dynamics code',
     url='https://github.com/thequantumchemist/falcon',
     author='Noah Felis and  Wilke Dononelli',
