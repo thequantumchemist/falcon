@@ -145,7 +145,7 @@ class Langevin(MolecularDynamics):
 
         if forces is None:
             forces = atoms.get_forces(md=True)
-            print('\n Atoms.get_forces executed (forces was None).\n')
+#            print('\n Atoms.get_forces executed (forces was None).\n')
 
         self.iterations+=1
         if (self.tbegin!=None) and (self.iterations<=self.heatsteps):
@@ -192,7 +192,7 @@ class Langevin(MolecularDynamics):
         self.v = (self.atoms.get_positions() - x -
                   self.c5 * self.eta) / self.dt
         forces = atoms.get_forces(md=True)
-        print('\n Atoms.get_forces executed (after RATTLE constraints...).\n')
+#        print('\n Atoms.get_forces executed (after RATTLE constraints...).\n')
 
 
         # Update the velocities
