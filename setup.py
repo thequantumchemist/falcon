@@ -13,6 +13,7 @@ setup(
         'falcon_md/structures': ['*.xyz', '*.traj'],
     },
     include_package_data=True,
+    python_requires=">=3.8",
     install_requires=['agox',
                       'numpy',
                       'ase',
