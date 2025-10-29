@@ -12,8 +12,8 @@ class FALCON(Calculator):
 
     Parameters
     -----------
-    model : falcon-md.models.model_base_class.ModelBaseClass
-        ML model to use for the OTF training.
+    model : falcon-md.models.model_base_class.ModelBaseClass or list of Models
+        ML model to use for the OTF training or list of models to load.
     
     calc : ASE calculator
         ASE calculator object to perform exact calculations.
@@ -27,11 +27,17 @@ class FALCON(Calculator):
     accuracy_f : float, optional
         Optional accuracy threshold for forces in eV/Å. Default: inf
 
+    accuracy_update : float, optional
+        Optional value by which the accuracy threshold is updated in every step in eV. Default: 0.0
+
     modelsize : int
         Average model size, defines number of structures before a new ML model is added. Default: 500
 
     max_clusters : int
         Maximum of clusters/ML models. Default: 1
+
+    start_clusters : int
+        Number of clusters/ML models used at the start of the simulation. Default: 1
     
     train_start : int
         Number of initial predictions, where the ML model is trained regardless of the uncertainty. Default: 10
@@ -42,11 +48,15 @@ class FALCON(Calculator):
     train_log : bool
         If True, retraining occurs at exponentially increasing intervals (2**x steps). Default: True.
 
+    i_batch : int
+        Defines number of structures added to training data of one model before batch training is performed. Default: 1
+
     write_training_data : bool
         Save training structures to file during simulation. Default: True.
 
     td_filename : str
         Filename for training data output. Default: "OTF_Training_Data.traj".
+
 
     """
 
@@ -61,12 +71,15 @@ class FALCON(Calculator):
                  calc,
                  training_data, 
                  accuracy_e=0.1, 
-                 accuracy_f=float('inf'), 
+                 accuracy_f=float('inf'),
+                 accuracy_update=0.0, 
                  modelsize=500, 
-                 max_clusters=1, 
+                 max_clusters=1,
+                 start_clusters=1, 
                  train_start=10, 
-                 train_every=1e9, 
+                 train_every=1e9,
                  train_log=True, 
+                 i_batch=1,
                  write_training_data=True,  
                  td_filename = 'OTF_Training_Data.traj', 
                  **kwargs):
@@ -79,27 +92,42 @@ class FALCON(Calculator):
         self.initialize = True
         self.accuracy_e = accuracy_e
         self.accuracy_f = accuracy_f
+        self.accuracy_update = accuracy_update
         self.training_data = training_data
         self.train_start = train_start
         self.train_every = train_every
         self.write_training_data = training_data
         self.training_data_filename = td_filename 
         self.modelsize = modelsize
+        self.start_clusters = start_clusters
         self.log_test = (lambda x: (np.log2(x) % 1) == 0) if train_log else (lambda x: False)
+        self.i_batch = i_batch
 
         # Setup of the ML models
-        self.models = []
-        self.active_models = []
-        self.descriptor = model.descriptor
-        self.last_clustering = 0
-        self.n_clusters = 0
-        self.max_clusters = max_clusters
+        if not type(model)==list:
+            self.models = []
+            self.active_models = []
+            self.descriptor = model.descriptor
+            self.last_clustering = 0
+            self.n_clusters = 0
+            self.max_clusters = max_clusters
+            self.reloaded = False
 
         # Creation of number of  ML models that is defined with max_clusters.
-        for i in range(max_clusters):
-            model_copy = copy.deepcopy(model)
-            setattr(self, f"model{i}", model_copy)
-            self.models.append(getattr(self, f"model{i}"))
+            for i in range(max_clusters):
+                model_copy = copy.deepcopy(model)
+                setattr(self, f"model{i}", model_copy)
+                self.models.append(getattr(self, f"model{i}"))
+
+        else:
+            self.models = model
+            self.active_models = model
+            self.descriptor = model[0].descriptor
+            self.last_clustering = 0
+            self.n_clusters = len(model)
+            self.max_clusters = len(model)
+            self.reloaded = True
+
 
 
 
@@ -113,15 +141,20 @@ class FALCON(Calculator):
 
 
         # Clustering of training data into subsets of data (triggered if modelsize is reached or self.initialize == True)
+
         if ((len(self.training_data) % self.modelsize == 0 and self.n_clusters <= self.max_clusters) or self.initialize) and len(self.training_data) != self.last_clustering:
             self.last_clustering = len(self.training_data)
 
+            if self.initialize:
+                self.n_clusters = self.start_clusters - 1
+
             if self.n_clusters < self.max_clusters:
                 start=time.time()
-                
                 self.n_clusters +=1
-                new_model = self.models.pop(0)
-                self.active_models.append(new_model)
+                while len(self.active_models)<self.n_clusters:
+                    new_model = self.models.pop(0)
+                    self.active_models.append(new_model)
+                self.batch_counts = [0] * len(self.active_models)
                 print(f'{len(self.active_models)} active Models.')
 
                 # Cluster all structures in training data using KMeans
@@ -145,6 +178,7 @@ class FALCON(Calculator):
                 start = time.time()
                 for i, model in enumerate(self.active_models):
                     start_model = time.time()
+                    print(type(model))
                     model.train(self.clusters[i])
                     end_model = time.time()
                     t_model = end_model - start_model
@@ -223,7 +257,7 @@ class FALCON(Calculator):
         print()
         
         # Determine if an exact calculation is necessary and perform it
-        if self.steps<self.train_start or self.steps % self.train_every == 0 or self.log_test(self.steps) or Estd>self.accuracy_e or Fstdmax>self.accuracy_f:
+        if (self.steps<self.train_start or self.steps % self.train_every == 0 or self.log_test(self.steps) or Estd>self.accuracy_e or Fstdmax>self.accuracy_f) and self.reloaded==False:
            print('Exact calculation...')           
            b=atoms.copy()
            b.calc=copy.deepcopy(self.calc)
@@ -245,7 +279,6 @@ class FALCON(Calculator):
                     traj.write(b)
 
            
-           start = time.time()
 
            # Predict nearest cluster of new training structure
            Y = self.descriptor.create_features(b)
@@ -253,25 +286,49 @@ class FALCON(Calculator):
            print(f'New structure is added to Model {pred_cluster[0]}.')
            print()
            self.clusters[pred_cluster[0]].append(b)
+           self.batch_counts[pred_cluster[0]] += 1
 
            # Only retrain the updated ML model
-           self.active_models[pred_cluster[0]].train(self.clusters[pred_cluster[0]])
-           end = time.time()
-           t = end-start
-           self.training_steps += 1
-           print(f'Step {self.steps}: Model {pred_cluster[0]} trained with {len(self.clusters[pred_cluster[0]])} Structures ({t} s). ({self.training_steps} Training steps.) ')
-           print()
+           if self.batch_counts[pred_cluster[0]] >= self.i_batch and self.steps>=self.train_start:
+               start = time.time()
+               self.active_models[pred_cluster[0]].train(self.clusters[pred_cluster[0]])
+               end = time.time()
+               t = end-start
+               self.training_steps += 1
+               self.batch_counts[pred_cluster[0]] = 0
+               print(f'Step {self.steps}: Model {pred_cluster[0]} trained with {len(self.clusters[pred_cluster[0]])} Structures ({t} s). ({self.training_steps} Training steps.) ')
+               print()
+
+           else:
+               print(f'Step {self.steps}: New structure added to training data of Model {pred_cluster[0]}. No training is performed since number of new structures for batch training is not reached yet.')
+
 
 
         else:
            self.steps += 1
+           self.accuracy_e += self.accuracy_update
+           self.accuracy_e = max(self.accuracy_e, 0)
            print(f'Step {self.steps}: Model not trained.')
            print()
+           
+        if self.accuracy_update!=0.0:
+            self.accuracy_e += self.accuracy_update
+            self.accuracy_e = max(self.accuracy_e, 0)
+            print(f"Accuracy threshold updated to {self.accuracy_e:.4f}.")
+            print()
+
         self.results['forces'] = F
         self.results['energy'] = E
         
 
     # Function to get features of an ASE atoms object
     def get_features(self, structures):
-        features = np.array(self.descriptor.get_features(structures)).sum(axis=1)
+        features = np.array(self.descriptor.get_features(structures))
+        print(np.shape(features))
+        if (np.shape(features)[0])==1:
+            features=features[0]
+        else:
+            features = features.sum(axis=1)
         return features
+
+
