@@ -84,6 +84,8 @@ class FALCON(Calculator):
                  td_filename = 'OTF_Training_Data.traj', 
                  **kwargs):
 
+        print("If you are using FALCON in a publication, please cite: \n Felis, N., Dononelli, W. (2025). FALCON: fast active learning for machine learning potentials in atomistic and ab initio molecular dynamics simulations. npj Comput. Mater., https://doi.org/10.1038/s41524-025-01897-8")
+
         Calculator.__init__(self, **kwargs)
 
         self.calc = calc
