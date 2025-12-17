@@ -112,4 +112,5 @@ After running the advanced tutorial you can analyse the results by visualising t
 
 # Citation
 When using FALCON, please cite the following paper:
+
 Felis, N., Dononelli, W. (2025). FALCON: fast active learning for machine learning potentials in atomistic and ab initio molecular dynamics simulations. *npj Comput. Mater.*, https://doi.org/10.1038/s41524-025-01897-8
