@@ -4,6 +4,7 @@ setup(
     name='falcon_md',
     version='1.2.0',
     description='The python distribution for the FALCON on-the-fly Machine Learning ab initio Molceular Dynamics code',
+    description-file = "README.md",
     url='https://github.com/thequantumchemist/falcon',
     author='Noah Felis and  Wilke Dononelli',
     author_email='wido@uni-bremen.de',
