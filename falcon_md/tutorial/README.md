@@ -1,7 +1,7 @@
-# FALCON-MD Tutorials
+# FALCON Tutorials
 
 
-This directory contains example scripts demonstrating how to use the **FALCON-MD**
+This directory contains example scripts demonstrating how to use the **FALCON**
 on-the-fly (OTF) calculator for molecular dynamics simulations.
 
 
@@ -10,9 +10,9 @@ This document focuses exclusively on the functionality and execution of the
 tutorials contained in this directory.
 
 The directory contains three tutorial scripts, designed to gradually introduce the main concepts of **FALCON**:
-1. Basic OTF molecular dynamics with a default ML model
-2. Advanced OTF training with a customized Sparse Gaussian Process model
-3. Postprocessing and analysis of simulation results
+1. Basic OTF molecular dynamics with a default ML model.
+2. Advanced OTF training with a customized Sparse Gaussian Process model.
+3. Postprocessing and analysis of simulation results.
 
 ---
 
@@ -20,13 +20,13 @@ The directory contains three tutorial scripts, designed to gradually introduce t
 ## Tutorial Overview
 
 - `simple_tutorial.py`  
-  Minimal on-the-fly MD example using the default Gaussian Process model  
+  Minimal on-the-fly MD example using the default Gaussian Process model.
 
 - `advanced_tutorial.py`  
-  Advanced on-the-fly MD with a custom SparseGPR model and aluminum melting  
+  Advanced on-the-fly MD with a custom SparseGPR model and aluminum melting.
 
-- `advanced_tutorial_analysis.py`  
-  Postprocessing and visualization of the advanced tutorial results
+- `advanced_tutorial_analysis.py`
+  Postprocessing and visualization of the advanced tutorial results.
 
 ---
 
@@ -34,7 +34,7 @@ The directory contains three tutorial scripts, designed to gradually introduce t
 ### Minimal On-the-Fly Molecular Dynamics
 
 This tutorial demonstrates:
-- Loading a predefined Pt_{55} cluster
+- Loading a predefined Pt₅₅ cluster
 - Geometry optimization using an exact EMT calculator
 - Generation of initial training data
 - On-the-fly training of a default GPR model
@@ -43,14 +43,14 @@ This tutorial demonstrates:
 The ML model is trained automatically whenever the predicted energy
 uncertainty exceeds a defined threshold.
 
-Run with:
+**Run with:**
 ```bash
 python simple_tutorial.py
 ```
 
 Output files:
-``MD.traj`` - molecular dynamics trajectory
-``opt.traj`` - geometry optimization trajectory (used as initial training data)
+ - ``MD.traj`` - molecular dynamics trajectory
+- ``opt.traj`` - geometry optimization trajectory (used as initial training data)
 
 ---
 
@@ -85,17 +85,17 @@ Output files:
 ## Tutorial 3: `advanced_tutorial_analysis.py`
 ### Postprocessing and Analysis
 
-This postprocesing script analyzes the results of the previous advanced tutorial calculation.
+This postprocessing script analyzes the results of the previous advanced tutorial calculation.
 It includes:
 
 - Plotting of the system energy versus the simulation time with highlighted on-the-fly training steps.
 - Computation of the radial distribution functions (RDFs) for solid and liquid phases of aluminum
 
-Required input:
+**Required input:**
 - ``MD.traj`` - molecular dynamics trajectory
 - ``falcon_output.out`` - FALCON log output
 
-Run with:
+**Run with:**
 ```bash
 python advanced_tutorial_analysis.py
 ```
@@ -103,9 +103,9 @@ python advanced_tutorial_analysis.py
 
 ## Recommended Workflow
 
-1. Run ``simple_tutorial.py`` to understand the basic FALCON workflow.
-2. Run ``advanced_tutorial.py > output.out`` for a more complex OTF-MD simulation.
-3. Analyze the results using ``advanced_tutorial_analysis.py``.
+**1.** Run ``simple_tutorial.py`` to understand the basic FALCON workflow.
+**2.** Run ``advanced_tutorial.py > output.out`` for a more complex OTF-MD simulation.
+**3.** Analyze the results using ``advanced_tutorial_analysis.py``.
 
 ---
 
@@ -113,7 +113,7 @@ python advanced_tutorial_analysis.py
 
 This section provides a **step-by-step explanation of each tutorial script**,
 describing the workflow, main components, and how the individual parts interact
-during an on-the-fly (OTF) molecular dynamics simulation with FALCON-MD.
+during an on-the-fly (OTF) molecular dynamics simulation with **FALCON**.
 
 ---
 
@@ -124,8 +124,8 @@ during an on-the-fly (OTF) molecular dynamics simulation with FALCON-MD.
 The goal of `simple_tutorial.py` is to demonstrate the **core idea of FALCON-MD**
 in the simplest possible setting:
 
-> A molecular dynamics simulation where a machine-learning model is trained
-> on-the-fly and automatically decides when an exact calculation is required.
+A molecular dynamics simulation where a machine-learning model is trained on-the-fly 
+and automatically decides when an exact calculation is required.
 
 This script is optimized for clarity and speed rather than realism.
 
@@ -137,7 +137,7 @@ This script is optimized for clarity and speed rather than realism.
 atoms = load_structure('Pt55')
 ```
 
-A predefined Pt_{55} cluster is loaded using the load_structure() function as the starting model of the simulations.
+A predefined Pt₅₅ cluster is loaded using the load_structure() function as the starting model of the simulations.
 Additionally, ASE's EMT potential is defined as the calculator for exact calculation during the OTF training and the 
 temperature of the simulation and accuracy threshold for retraining is defined.
 
@@ -149,9 +149,14 @@ accuracy_e = 0.10
 
 ### Step 2: Generating the initial training data
 
-```python
 Before starting MD, the structure is relaxed using the EMT potential and the trajectory of the optimization is used as initial training
 data for the ML model.
+
+```python
+atoms.calc = exact_calc
+qn = QuasiNewton(atoms, trajectory='opt.traj')
+qn.run(0.00001, 10)
+training_data = read('opt.traj@0:')
 ```
 
 ### Step 3: Setup of the FALCON Calculator 
