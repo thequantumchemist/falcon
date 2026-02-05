@@ -4,7 +4,7 @@
 # Generates plot of the energy versus time and highlights OTF training steps during the simulation.
 from falcon_md.utils.analysis.simulation import plot_simulation
 
-plot_simulation("MD.traj", "INSERT_FALCON_OUTPUTFILE.out")
+plot_simulation("MD.traj", "falcon_output.out")
 
 
 
