@@ -46,7 +46,7 @@ The tutorial directory of this repository contains three example scripts demonst
 2. Advanced OTF training with a customized Sparse Gaussian Process model.
 3. Postprocessing and analysis of simulation results.
 
-A detailed explanation is given in the ``README.md`` in the tutorial directory.
+A detailed explanation is given in the ``README.md`` in the tutorial directory (https://github.com/thequantumchemist/falcon/tree/main/falcon_md/tutorial)
 
 ------------
 
