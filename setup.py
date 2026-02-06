@@ -1,10 +1,15 @@
 from setuptools import setup
+from pathlib import Path
+
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 setup(
     name='falcon_md',
-    version='1.2.0',
-    description='The python distribution for the FALCON on-the-fly Machine Learning ab initio Molceular Dynamics code',
-    description-file = "README.md",
+    version='1.3.0',
+    description='The python distribution for the FALCON on-the-fly Machine Learning ab initio Molecular Dynamics code',
+    long_description = long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/thequantumchemist/falcon',
     author='Noah Felis and  Wilke Dononelli',
     author_email='wido@uni-bremen.de',
