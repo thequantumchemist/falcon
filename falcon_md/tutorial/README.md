@@ -103,9 +103,9 @@ python advanced_tutorial_analysis.py
 
 ## Recommended Workflow
 
-**1.** Run ``simple_tutorial.py`` to understand the basic FALCON workflow.
-**2.** Run ``advanced_tutorial.py > output.out`` for a more complex OTF-MD simulation.
-**3.** Analyze the results using ``advanced_tutorial_analysis.py``.
+1. Run ``simple_tutorial.py`` to understand the basic FALCON workflow.
+2. Run ``advanced_tutorial.py > output.out`` for a more complex OTF-MD simulation.
+3. Analyze the results using ``advanced_tutorial_analysis.py``.
 
 ---
 
@@ -339,7 +339,7 @@ The radial distribution function (RDF) is averaged over two time windows:
 - One corresponding to the solid phase
 - One corresponding to the liquid phase
 
-This provides a clear structural comparison between ordered and disordered states.
+This provides a clear structural comparison between ordered and disordered states and shows the results of the **FALCON** simulation.
 
 ```python
 plot_rdf(filename="MD.traj",
